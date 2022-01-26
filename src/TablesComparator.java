@@ -51,7 +51,7 @@ public class TablesComparator {
     }
 
     //Алгоритм находящий все необходимые наборы ключей за один проход
-    public void allKeys(Set<String> inPrevOnly, Set<String> inNewOnly, Set<String> changed){
+    public void allKeys(Set<String> changed, Set<String> inPrevOnly, Set<String> inNewOnly){
         TreeMap<String, String> sortedPrev = new TreeMap<>(prevTable);
         TreeMap<String, String> sortedNew = new TreeMap<>(newTable);
         Iterator<Map.Entry<String,String>> iteratorPrev = sortedPrev.entrySet().iterator();
@@ -94,47 +94,7 @@ public class TablesComparator {
         iteratorPrev.forEachRemaining((ent) -> inPrevOnly.add(ent.getKey()));
     }
 
-    //Вариант решения 1
-    //С использованием отдельных простых методов для большей понятности и гибкости
-    public void formLetter1(){
-        Set<String> keysChanged = keysWithChangedValues();
-        Set<String> keysPrev = keysInPrevOnly();
-        Set<String> keysNew = keysInNewOnly();
 
-        List<String> lines = Arrays.asList(
-                "Здравствуйте, дорогая и.о. секретаря,\nЗа последние сутки во вверенных Вам сайтах произошли следующие изменения:\n",
-                "Исчезли следующие страницы: " + String.join(", ", keysPrev),
-                "Появились следующие новые страницы: " + String.join(", ", keysNew),
-                "Изменились следующие страницы: " + String.join(", ", keysChanged),
-                "\nС уважением,\nавтоматизированная система мониторинга.");
-        Path letter1Path = Paths.get("letter1.txt");
-        try {
-            Files.write(letter1Path, lines, StandardCharsets.UTF_8);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
 
-    //Вариант решения 2
-    //С использованием алгоритма находящего все необходимые наборы ключей за один проход
-    public void formLetter2() {
-        Set<String> keysChanged = new HashSet<>();
-        Set<String> keysPrev = new HashSet<>();
-        Set<String> keysNew = new HashSet<>();
-        allKeys(keysPrev, keysNew, keysChanged);
-
-        List<String> lines = Arrays.asList(
-                "Здравствуйте, дорогая и.о. секретаря,\nЗа последние сутки во вверенных Вам сайтах произошли следующие изменения:\n",
-                "Исчезли следующие страницы: " + String.join(", ", keysPrev),
-                "Появились следующие новые страницы: " + String.join(", ", keysNew),
-                "Изменились следующие страницы: " + String.join(", ", keysChanged),
-                "\nС уважением,\nавтоматизированная система мониторинга.");
-        Path letter2Path = Paths.get("letter2.txt");
-        try {
-            Files.write(letter2Path, lines, StandardCharsets.UTF_8);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
 }
 
